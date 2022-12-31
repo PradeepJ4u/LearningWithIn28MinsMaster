@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,21 +16,21 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import jakarta.validation.Valid;
 
-//@Controller
+@Controller
 @SessionAttributes("name")
-public class ToDoController {
+public class ToDoControllerJPA {
 
-	private ToDoService toDoService;
+	private TodoRepository todoRepostiory;
 
-	public ToDoController(ToDoService toDoService) {
+	public ToDoControllerJPA(TodoRepository todoRepostiory) {
 		super();
-		this.toDoService = toDoService;
+		this.todoRepostiory = todoRepostiory;
 	}
 
 	@RequestMapping(value = "list-todos")
 	public String listDoDos(ModelMap model) {
 		String name = getLoggedUserName(model);
-		List<ToDo> listToDo = toDoService.findByUserName(name);
+		List<ToDo> listToDo = todoRepostiory.findByUserName(name);
 		model.put("listToDo", listToDo);
 		return "listTodos";
 	}
@@ -48,20 +49,21 @@ public class ToDoController {
 			return "todo";
 		}
 		String name = getLoggedUserName(model);
-		toDoService.addToDo(name, todo.getDescription(), todo.getTargetDate());
+		todo.setUserName(name);
+		todoRepostiory.save(todo);
 		return "redirect:list-todos";
 	}
 
 	@RequestMapping(value = "delete-todo", method = RequestMethod.GET)
 	public String deleteDoDos(@RequestParam int id) {
-		toDoService.deleteToDo(id);
+		todoRepostiory.deleteById(id);
+		// toDoService.deleteToDo(id);
 		return "redirect:list-todos";
 	}
 
 	@RequestMapping(value = "update-todo", method = RequestMethod.GET)
 	public String updateDoDosGet(@RequestParam int id, ModelMap model) {
-		ToDo todo = toDoService.findById(id);
-		model.put("todo", todo);
+		model.put("todo", todoRepostiory.findById(id).get());
 		return "todo";
 	}
 
@@ -70,7 +72,7 @@ public class ToDoController {
 		if (result.hasErrors()) {
 			return "todo";
 		}
-		toDoService.updateToDo(todo);
+		todoRepostiory.save(todo);
 		return "redirect:list-todos";
 	}
 
