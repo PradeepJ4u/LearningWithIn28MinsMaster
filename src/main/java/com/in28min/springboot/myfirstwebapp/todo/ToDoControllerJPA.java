@@ -34,6 +34,12 @@ public class ToDoControllerJPA {
 		model.put("listToDo", listToDo);
 		return "listTodos";
 	}
+	
+	@RequestMapping(value = "/")
+	public String welcomePage(ModelMap model) {
+		return "welcome";
+	}
+
 
 	@RequestMapping(value = "add-todo", method = RequestMethod.GET)
 	public String addDoDos(ModelMap model) {
@@ -48,7 +54,7 @@ public class ToDoControllerJPA {
 		if (result.hasErrors()) {
 			return "todo";
 		}
-		String name = getLoggedUserName(model);
+		 String name = getLoggedUserName(model);
 		todo.setUserName(name);
 		todoRepostiory.save(todo);
 		return "redirect:list-todos";
@@ -57,7 +63,6 @@ public class ToDoControllerJPA {
 	@RequestMapping(value = "delete-todo", method = RequestMethod.GET)
 	public String deleteDoDos(@RequestParam int id) {
 		todoRepostiory.deleteById(id);
-		// toDoService.deleteToDo(id);
 		return "redirect:list-todos";
 	}
 

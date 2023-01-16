@@ -12,10 +12,10 @@ public class ToDo {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 	private String userName;
 	
-	@Size(min=10, message="Enter atleast 10 characters")
+	@Size(min=5, message="Enter atleast 5 characters")
 	private String description;
 	private LocalDate targetDate;
 	private boolean done;
@@ -24,7 +24,7 @@ public class ToDo {
 		
 	}
 
-	public ToDo(int id, String userName, String description, LocalDate targetDate, boolean done) {
+	public ToDo(Integer id, String userName, String description, LocalDate targetDate, boolean done) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -33,11 +33,11 @@ public class ToDo {
 		this.done = done;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

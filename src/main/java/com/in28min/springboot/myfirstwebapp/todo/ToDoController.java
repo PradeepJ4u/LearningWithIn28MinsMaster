@@ -19,8 +19,8 @@ import jakarta.validation.Valid;
 @SessionAttributes("name")
 public class ToDoController {
 
-	private ToDoService toDoService;
-
+	private ToDoService toDoService;	
+	
 	public ToDoController(ToDoService toDoService) {
 		super();
 		this.toDoService = toDoService;
@@ -74,9 +74,10 @@ public class ToDoController {
 		return "redirect:list-todos";
 	}
 
-	private String getLoggedUserName(ModelMap model) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return authentication.getName();
-	}
+	
+	  private String getLoggedUserName(ModelMap model) { Authentication
+	  authentication = SecurityContextHolder.getContext().getAuthentication();
+	  return authentication.getName(); }
+	 
 
 }
